@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Laravel shop',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Laravel</b> shop',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -297,6 +297,38 @@ return [
             'topnav_right' => true,
         ],
         [
+            'type'         => 'navbar-notification',
+            'id'           => 'my-comments',      // An ID attribute (required).
+            'icon'         => 'far fa-comments',          // A font awesome icon (required).
+            'icon_color'   => 'secondary',              // The initial icon color (optional).
+            'label'        => 0,                      // The initial label for the badge (optional).
+            'label_color'  => 'danger',               // The initial badge color (optional).
+            'url'          => 'comments/show',   // The url to access all notifications/elements (required).
+            'topnav_right' => true,                   // Or "topnav => true" to place on the left (required).
+            'dropdown_mode'   => true,                // Enables the dropdown mode (optional).
+            'dropdown_flabel' => 'All comments', // The label for the dropdown footer link (optional).
+            'update_cfg'   => [
+                'url' => 'comments/get',         // The url to periodically fetch new data (optional).
+                'period' => 30,                       // The update period for get new data (in seconds, optional).
+            ],
+        ],
+        [
+            'type'         => 'navbar-notification',
+            'id'           => 'my-notification',      // An ID attribute (required).
+            'icon'         => 'far fa-bell',          // A font awesome icon (required).
+            'icon_color'   => 'secondary',              // The initial icon color (optional).
+            'label'        => 0,                      // The initial label for the badge (optional).
+            'label_color'  => 'warning',               // The initial badge color (optional).
+            'url'          => 'notifications/show',   // The url to access all notifications/elements (required).
+            'topnav_right' => true,                   // Or "topnav => true" to place on the left (required).
+            'dropdown_mode'   => true,                // Enables the dropdown mode (optional).
+            'dropdown_flabel' => 'All notifications', // The label for the dropdown footer link (optional).
+            'update_cfg'   => [
+                'url' => 'notifications/get',         // The url to periodically fetch new data (optional).
+                'period' => 30,                       // The update period for get new data (in seconds, optional).
+            ],
+        ],
+        [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
@@ -312,76 +344,36 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
+            'text'        => 'Orders',
+            'url'         => 'admin/orders',
+            'icon'        => 'fas fa-shopping-bag',
+            'label'       => 0,
             'label_color' => 'success',
         ],
-        ['header' => 'account_settings'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Products',
+            'url'  => 'admin/products',
+            'icon' => 'fas fa-tshirt',
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text' => 'Categories',
+            'url'  => 'admin/сategories',
+            'icon' => 'fas fa-list',
         ],
         [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
+            'text' => 'Tags',
+            'url'  => 'admin/tags',
+            'icon' => 'fas fa-tag',
         ],
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text' => 'Colors',
+            'url'  => 'admin/colors',
+            'icon' => 'fas fa-palette',
         ],
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text' => 'Users',
+            'url'  => 'admin/users',
+            'icon' => 'fas fa-users',
         ],
     ],
 
