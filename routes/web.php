@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +35,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
         Route::patch('/{category}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/{category}', [CategoryController::class, 'delete'])->name('category.delete');
+    });
+    Route::prefix('tags')->group(function () {
+        Route::get('/', [TagController::class, 'index'])->name('tag.index');
+        Route::get('/create', [TagController::class, 'create'])->name('tag.create');
+        Route::post('/', [TagController::class, 'store'])->name('tag.store');
+        Route::get('/{tag}', [TagController::class, 'show'])->name('tag.show');
+        Route::get('/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
+        Route::patch('/{tag}', [TagController::class, 'update'])->name('tag.update');
+        Route::delete('/{tag}', [TagController::class, 'delete'])->name('tag.delete');
     });
 });
