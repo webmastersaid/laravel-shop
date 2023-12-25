@@ -4,6 +4,8 @@ start:
 	docker-compose start
 stop: 
 	docker-compose stop
+restart:
+	docker-compose restart
 down: 
 	docker-compose down
 sh: 
