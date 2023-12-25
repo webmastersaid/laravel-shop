@@ -357,7 +357,7 @@ return [
         ],
         [
             'text' => 'Categories',
-            'url'  => 'admin/сategories',
+            'url'  => 'admin/categories',
             'icon' => 'fas fa-list',
         ],
         [
