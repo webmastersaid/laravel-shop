@@ -1,0 +1,6 @@
+.color-box {
+    width: 16px;
+    height: 16px;
+    border: solid 1px black;
+    border-radius: 100%;
+}

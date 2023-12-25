@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +45,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
         Route::patch('/{tag}', [TagController::class, 'update'])->name('tag.update');
         Route::delete('/{tag}', [TagController::class, 'delete'])->name('tag.delete');
+    });
+    Route::prefix('colors')->group(function () {
+        Route::get('/', [ColorController::class, 'index'])->name('color.index');
+        Route::get('/create', [ColorController::class, 'create'])->name('color.create');
+        Route::post('/', [ColorController::class, 'store'])->name('color.store');
+        Route::get('/{color}', [ColorController::class, 'show'])->name('color.show');
+        Route::get('/{color}/edit', [ColorController::class, 'edit'])->name('color.edit');
+        Route::patch('/{color}', [ColorController::class, 'update'])->name('color.update');
+        Route::delete('/{color}', [ColorController::class, 'delete'])->name('color.delete');
     });
 });
