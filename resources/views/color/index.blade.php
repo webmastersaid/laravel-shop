@@ -27,9 +27,7 @@
                         <tr>
                             <td>{{ $color->id }}</td>
                             <td><a href="{{ route('color.show', $color->id) }}">#{{ $color->title }}</a></td>
-                            <td>
-                                <div class="color-box" style="background: #{{ $color->title }};"></div>
-                            </td>
+                            <td style="background-color: #{{ $color->title }};"></td>
                             <td>{{ $color->created_at }}</td>
                             <td>{{ $color->updated_at }}</td>
                         </tr>
