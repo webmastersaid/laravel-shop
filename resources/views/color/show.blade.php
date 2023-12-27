@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th>Color</th>
-                        <td><div style="width: 16px; height: 16px; background: #{{ $color->title }};"></div></td>
+                        <td style="background-color: #{{ $color->title }};"></td>
                     </tr>
                     <tr>
                         <th>Created</th>
