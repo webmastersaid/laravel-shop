@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -64,5 +65,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/{user}', [UserController::class, 'delete'])->name('user.delete');
+    });
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('product.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+        Route::post('/', [ProductController::class, 'store'])->name('product.store');
+        Route::get('/{product}', [ProductController::class, 'show'])->name('product.show');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
+        Route::patch('/{product}', [ProductController::class, 'update'])->name('product.update');
+        Route::delete('/{product}', [ProductController::class, 'delete'])->name('product.delete');
     });
 });
