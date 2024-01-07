@@ -364,6 +364,11 @@ return [
             'icon' => 'fas fa-list',
         ],
         [
+            'text' => 'Groups',
+            'url'  => '/admin/groups',
+            'icon' => 'fas fa-layer-group',
+        ],
+        [
             'text' => 'Tags',
             'url'  => '/admin/tags',
             'icon' => 'fas fa-tag',

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -74,5 +75,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
         Route::patch('/{product}', [ProductController::class, 'update'])->name('product.update');
         Route::delete('/{product}', [ProductController::class, 'delete'])->name('product.delete');
+    });
+    Route::prefix('groups')->group(function () {
+        Route::get('/', [GroupController::class, 'index'])->name('group.index');
+        Route::get('/create', [GroupController::class, 'create'])->name('group.create');
+        Route::post('/', [GroupController::class, 'store'])->name('group.store');
+        Route::get('/{group}', [GroupController::class, 'show'])->name('group.show');
+        Route::get('/{group}/edit', [GroupController::class, 'edit'])->name('group.edit');
+        Route::patch('/{group}', [GroupController::class, 'update'])->name('group.update');
+        Route::delete('/{group}', [GroupController::class, 'delete'])->name('group.delete');
     });
 });
