@@ -27,10 +27,11 @@ class UpdateRequest extends FormRequest
             'content' => 'nullable|string',
             'preview_image' => 'nullable|file',
             'detail_image' => 'nullable|file',
-            'price' => 'nullable|integer',
+            'price' => 'nullable|numeric',
             'count' => 'nullable|integer',
             'is_published' => 'nullable|integer',
             'category_id' => 'nullable|integer',
+            'group_id' => 'nullable|integer',
             'tags' => 'nullable|array',
             'colors' => 'nullable|array',
         ];

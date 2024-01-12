@@ -23,13 +23,27 @@ class Product extends Model
     {
         return self::getPublished()[$this->is_published];
     }
+    public function getPreviewImageUrlAttribute()
+    {
+        return '/storage/'.$this->preview_image;
+    }
+    public function getDetailImageUrlAttribute()
+    {
+        return '/storage/'.$this->detail_image;
+    }
     public function category() {
         return $this->belongsTo(Category::class);
+    }
+    public function group() {
+        return $this->belongsTo(Group::class);
     }
     public function tags() {
         return $this->belongsToMany(Tag::class);
     }
     public function colors() {
         return $this->belongsToMany(Color::class);
+    }
+    public function images() {
+        return $this->hasMany(ProductImage::class);
     }
 }

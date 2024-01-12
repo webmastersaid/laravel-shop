@@ -98,6 +98,21 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-6">
+                    <label>Group</label>
+                    <select class="form-control" name="group_id">
+                        <option selected disabled>Not selected</option>
+                        @foreach ($groups as $group)
+                            <option value="{{ $group->id }}"
+                                {{ old('category_id') == $group->id ? 'selected' : '' }}>
+                                {{ $group->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('group_id')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
                     <label>Tags</label>
                     <select class="form-control" name="tags[]" multiple>
                         @foreach ($tags as $tag)
@@ -118,6 +133,20 @@
                         @endforeach
                     </select>
                     @error('colors')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Published</label>
+                    <select class="form-control" name="is_published">
+                        <option value="1" {{ $product->published == 'Yes' ? 'selected' : '' }}>
+                            Yes
+                        </option>
+                        <option value="0" {{ $product->published == 'No' ? 'selected' : '' }}>
+                            No
+                        </option>
+                    </select>
+                    @error('is_published')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>

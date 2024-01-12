@@ -27,10 +27,11 @@ class StoreRequest extends FormRequest
             'content' => 'nullable|string',
             'preview_image' => 'nullable|file',
             'detail_image' => 'nullable|file',
-            'price' => 'nullable|integer',
+            'price' => 'nullable|regex:/^(\d*|\d*\.\d{2})$/',
             'count' => 'nullable|integer',
             'is_published' => 'nullable|integer',
             'category_id' => 'nullable|integer',
+            'group_id' => 'nullable|integer',
             'tags' => 'nullable|array',
             'colors' => 'nullable|array',
         ];
