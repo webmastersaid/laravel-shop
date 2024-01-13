@@ -98,6 +98,10 @@ class ProductController extends Controller
     }
     public function delete(Product $product)
     {
+        $product->category()->dissociate();
+        $product->group()->dissociate();
+        $product->tags()->detach();
+        $product->colors()->detach();
         $product->delete();
         return redirect()->route('product.index');
     }
