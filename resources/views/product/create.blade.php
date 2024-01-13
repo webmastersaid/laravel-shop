@@ -136,20 +136,6 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Published</label>
-                    <select class="form-control" name="is_published">
-                        <option value="1" {{ $product->published == 'Yes' ? 'selected' : '' }}>
-                            Yes
-                        </option>
-                        <option value="0" {{ $product->published == 'No' ? 'selected' : '' }}>
-                            No
-                        </option>
-                    </select>
-                    @error('is_published')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
