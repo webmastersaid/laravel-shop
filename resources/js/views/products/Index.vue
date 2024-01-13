@@ -66,6 +66,11 @@ export default {
                                 <div class="modal-body">
                                     <img v-if="modalProduct.preview_image" :src="modalProduct.preview_image"
                                         :alt="modalProduct.preview_image" class="img-fluid">
+                                    <div v-if="modalProduct.product_images" class="row">
+                                        <div v-for="productImage in modalProduct.product_images" class="col-4">
+                                            <img :src="productImage.url" class="img-fluid" :alt="productImage.url">
+                                        </div>
+                                    </div>
                                     <div v-if="modalProduct.description">Description:
                                         <p>{{ modalProduct.description }}</p>
                                     </div>

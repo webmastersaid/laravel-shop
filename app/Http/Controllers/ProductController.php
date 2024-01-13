@@ -9,6 +9,7 @@ use App\Models\Color;
 use App\Models\ColorProduct;
 use App\Models\Group;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductTag;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
@@ -35,9 +36,10 @@ class ProductController extends Controller
             $data['preview_image'] = Storage::disk('public')->put('/images/preview', $data['preview_image']);
         if (isset($data['detail_image']))
             $data['detail_image'] = Storage::disk('public')->put('/images/detail', $data['detail_image']);
+        $productImages = isset($data['product_images']) ? $data['product_images'] : [];
         $tagIds = isset($data['tags']) ? $data['tags'] : [];
         $colorIds = isset($data['colors']) ? $data['colors'] : [];
-        unset($data['tags'], $data['colors']);
+        unset($data['tags'], $data['colors'], $data['product_images']);
         $product = Product::firstOrCreate([
             'title' => $data['title']
         ], $data);
@@ -51,6 +53,15 @@ class ProductController extends Controller
             ColorProduct::firstOrCreate([
                 'product_id' => $product->id,
                 'color_id' => $colorId,
+            ]);
+        }
+        foreach ($productImages as $productImage) {
+            $imageCount = ProductImage::where('product_id', $product->id)->count();
+            if ($imageCount > 3) break;
+            $filePath = Storage::disk('public')->put('/images/product', $productImage);
+            ProductImage::firstOrCreate([
+                'product_id' => $product->id,
+                'file_path' => $filePath,
             ]);
         }
         return redirect()->route('product.index');
@@ -74,10 +85,10 @@ class ProductController extends Controller
             $data['preview_image'] = Storage::disk('public')->put('/images/preview', $data['preview_image']);
         if (isset($data['detail_image']))
             $data['detail_image'] = Storage::disk('public')->put('/images/detail', $data['detail_image']);
-        
+        $productImages = isset($data['product_images']) ? $data['product_images'] : [];
         $tagIds = isset($data['tags']) ? $data['tags'] : [];
         $colorIds = isset($data['colors']) ? $data['colors'] : [];
-        unset($data['tags'], $data['colors']);
+        unset($data['tags'], $data['colors'], $data['product_images']);
         $product = Product::firstOrCreate([
             'title' => $data['title']
         ], $data);
@@ -91,6 +102,15 @@ class ProductController extends Controller
             ColorProduct::firstOrCreate([
                 'product_id' => $product->id,
                 'color_id' => $colorId,
+            ]);
+        }
+        foreach ($productImages as $productImage) {
+            $imageCount = ProductImage::where('product_id', $product->id)->count();
+            if ($imageCount > 3) break;
+            $filePath = Storage::disk('public')->put('/images/product', $productImage);
+            ProductImage::firstOrCreate([
+                'product_id' => $product->id,
+                'file_path' => $filePath,
             ]);
         }
         $product->update($data);

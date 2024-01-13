@@ -40,10 +40,17 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exampleInputFile">Preview image</label>
+                    <div>
+                        <img src="{{ Storage::url($product->preview_image) }}" alt="{{ $product->preview_image }}"
+                            height="100">
+                    </div>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" name="preview_image" class="custom-file-input" id="previewImage">
-                            <label class="custom-file-label" for="previewImage">Choose image</label>
+                            <input type="file" value="{{ old('preview_image', $product->preview_image) }}"
+                                name="preview_image" class="custom-file-input" id="previewImage"
+                                placeholder="{{ old('preview_image', $product->preview_image) }}">
+                            <label class="custom-file-label"
+                                for="previewImage">{{ old('preview_image', $product->preview_image) }}</label>
                         </div>
                         <div class="input-group-append">
                             <span class="input-group-text">Upload</span>
@@ -55,15 +62,49 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exampleInputFile">Detail image</label>
+                    <div>
+                        <img src="{{ Storage::url($product->detail_image) }}" alt="{{ $product->detail_image }}"
+                            height="100">
+                    </div>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" name="detail_image" class="custom-file-input" id="detailImage">
-                            <label class="custom-file-label" for="detailImage">Choose image</label>
+                            <input type="file" value="{{ old('detail_image', $product->detail_image) }}"
+                                name="detail_image" class="custom-file-input" id="detailImage"
+                                placeholder="{{ old('detail_image', $product->detail_image) }}">
+                            <label class="custom-file-label"
+                                for="detailImage">{{ old('detail_image', $product->detail_image) }}</label>
                         </div>
                         <div class="input-group-append">
                             <span class="input-group-text">Upload</span>
                         </div>
                     </div>
+                    @error('detail_image')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Product images</label>
+                    @foreach (range(0, 2) as $i)
+                        <div>
+                            <img src="{{ Storage::url($product->productImages[$i]->file_path) }}"
+                                alt="{{ $product->productImages[$i]->file_path }}" height="100">
+                            <span>{{ old('product_images[0]', $product->productImages[$i]->file_path) }}</span>
+                        </div>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file"
+                                    value="{{ old('product_images[' . $i . ']', $product->productImages[0]->file_path) }}"
+                                    name="product_images[]" class="custom-file-input" id="productImage_{{ $i }}"
+                                    placeholder="{{ old('product_images[' . $i . ']', $product->productImages[$i]->file_path) }}">
+                                <label class="custom-file-label" for="productImage_{{ $i }}">
+                                    Choose image
+                                </label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Upload</span>
+                            </div>
+                        </div>
+                    @endforeach
                     @error('detail_image')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -118,9 +159,9 @@
                     <label>Tags</label>
                     <select class="form-control" name="tags[]" multiple>
                         @foreach ($tags as $tag)
-                            <option value="{{ $tag->id }}" @foreach ($product->tags as $productTags)
-                                {{$tag->id == $productTags->id ? 'selected' : ''}}
-                            @endforeach>
+                            <option value="{{ $tag->id }}"
+                                @foreach ($product->tags as $productTags)
+                                {{ $tag->id == $productTags->id ? 'selected' : '' }} @endforeach>
                                 {{ $tag->title }}
                             </option>
                         @endforeach

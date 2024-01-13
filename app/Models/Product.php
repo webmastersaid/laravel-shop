@@ -43,7 +43,7 @@ class Product extends Model
     public function colors() {
         return $this->belongsToMany(Color::class);
     }
-    public function images() {
+    public function productImages() {
         return $this->hasMany(ProductImage::class);
     }
 }

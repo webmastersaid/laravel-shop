@@ -52,6 +52,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Product images</th>
+                    <td>
+                        <img src="{{ Storage::url($product->productImages[0]->file_path) }}" alt="{{ $product->productImages[0]->file_path }}" style="height: 100px;">
+                        <img src="{{ Storage::url($product->productImages[1]->file_path) }}" alt="{{ $product->productImages[1]->file_path }}" style="height: 100px;">
+                        <img src="{{ Storage::url($product->productImages[2]->file_path) }}" alt="{{ $product->productImages[2]->file_path }}" style="height: 100px;">
+                    </td>
+                </tr>
+                <tr>
                     <th>Price</th>
                     <td>{{ $product->price }}</td>
                 </tr>
