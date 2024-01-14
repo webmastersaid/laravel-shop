@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\FilterController;
 use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/filter', [FilterController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
