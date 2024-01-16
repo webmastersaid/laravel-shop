@@ -15,7 +15,7 @@ export default {
                 colors: [],
                 prices: [],
             },
-            filterApply: false,
+            sort: 'a-z',
         }
     },
     mounted() {
@@ -62,6 +62,40 @@ export default {
             this.filter.prices = []
             this.getFilteredProducts()
         },
+        sortBy() {
+            if (this.sort === 'min') {
+                this.products.sort((a, b) => a.price - b.price)
+            }
+            if (this.sort === 'max') {
+                this.products.sort((a, b) => b.price - a.price)
+            }
+            if (this.sort === 'a-z') {
+                this.products.sort((a, b) => {
+                    const titleA = a.title.toUpperCase()
+                    const titleB = b.title.toUpperCase()
+                    if (titleA < titleB) {
+                        return -1;
+                    }
+                    if (titleA > titleB) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            }
+            if (this.sort === 'z-a') {
+                this.products.sort((a, b) => {
+                    const titleA = a.title.toUpperCase()
+                    const titleB = b.title.toUpperCase()
+                    if (titleA > titleB) {
+                        return -1;
+                    }
+                    if (titleA < titleB) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            }
+        }
     }
 }
 </script>
@@ -69,6 +103,17 @@ export default {
     <main class="container">
         <h1>Products</h1>
         <ul class="nav justify-content-end mb-2">
+            <li class="nav-item m-1">
+                <div class="nav-link text-dark">Sort by: </div>
+            </li>
+            <li class="nav-item m-1">
+                <select v-model="sort" :on-select="sortBy()" class="form-select" aria-label="Default select example">
+                    <option value="min">Min price</option>
+                    <option value="max">Max price</option>
+                    <option value="a-z">A-Z</option>
+                    <option value="z-a">Z-A</option>
+                </select>
+            </li>
             <li class="nav-item m-1">
                 <div class="nav-link text-dark">Filter: </div>
             </li>
@@ -124,8 +169,8 @@ export default {
                         <li v-for="color in filters.colors">
                             <div class="dropdown-item">
                                 <div class="form-check">
-                                    <input v-model="filter.colors" class="form-check-input" type="checkbox" :value="color.id"
-                                        :id="`color_${color.id}`">
+                                    <input v-model="filter.colors" class="form-check-input" type="checkbox"
+                                        :value="color.id" :id="`color_${color.id}`">
                                     <label class="form-check-label d-flex justify-content-between"
                                         :for="`color_${color.id}`">
                                         <div>#{{ color.title }}</div>
@@ -233,4 +278,5 @@ export default {
                 </div>
             </template>
         </div>
-</main></template>
+    </main>
+</template>
