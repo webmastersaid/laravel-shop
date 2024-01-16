@@ -31,7 +31,6 @@ export default {
                 .then(res => {
                     this.products = res.data.data
                     this.pagination = res.data.meta
-                    console.log(this.pagination)
                 })
         },
         getProduct(id) {
@@ -221,9 +220,15 @@ export default {
             <template v-for="product in products">
                 <div v-if="product.is_published" class="col">
                     <div class="card shadow-sm">
-                        <img :src="product.preview_image" alt="" class="card-img-top">
+                        <RouterLink :to="{ name: 'products.show', params: { id: product.id } }">
+                            <img :src="product.preview_image" :alt="product.preview_image" class="card-img-top">
+                        </RouterLink>
                         <div class="card-body">
-                            <h5 class="card-title">{{ product.title }}</h5>
+                            <h5 class="card-title">
+                                <RouterLink :to="{ name: 'products.show', params: { id: product.id } }">
+                                    {{ product.title }}
+                                </RouterLink>
+                            </h5>
                             <p class="card-text">{{ product.description }}</p>
                             <div class="text-body-secondary">$ {{ product.price }}</div>
                             <div class="d-flex justify-content-end align-items-center">
@@ -269,7 +274,11 @@ export default {
                                         <template v-for="groupProducts in modalProduct.group_products">
                                             <span @click="getProduct(groupProducts.id)"
                                                 v-for="color in groupProducts.colors" class="color-circle m-1"
-                                                :style="'background-color: #' + color.title + ';'"></span>
+                                                :style="'background-color: #' + color.title + ';'"
+                                                :title="groupProducts.title"></span>
+                                            <small>
+                                                {{ groupProducts.title }}
+                                            </small>
                                         </template>
                                     </div>
                                     <div>Price: $ <strong>{{ modalProduct.price }}</strong></div>
@@ -297,7 +306,8 @@ export default {
                         <li v-if="(pagination.current_page - link.label < 2 &&
                             pagination.current_page - link.label > -2) ||
                             +link.label === 1 ||
-                            +link.label === pagination.last_page" :class="link.active ? 'page-item active' : 'page-item'">
+                            +link.label === pagination.last_page"
+                            :class="link.active ? 'page-item active' : 'page-item'">
                             <a @click.prevent="getProducts(link.label)" class="page-link" href="#">{{ link.label }}</a>
                         </li>
                         <li v-if="pagination.current_page !== 3 &&
