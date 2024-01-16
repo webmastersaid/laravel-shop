@@ -54,9 +54,9 @@
                 <tr>
                     <th>Product images</th>
                     <td>
-                        <img src="{{ Storage::url($product->productImages[0]->file_path) }}" alt="{{ $product->productImages[0]->file_path }}" style="height: 100px;">
-                        <img src="{{ Storage::url($product->productImages[1]->file_path) }}" alt="{{ $product->productImages[1]->file_path }}" style="height: 100px;">
-                        <img src="{{ Storage::url($product->productImages[2]->file_path) }}" alt="{{ $product->productImages[2]->file_path }}" style="height: 100px;">
+                        @foreach ($product->productImages as $productImage)
+                            <img src="{{ Storage::url($productImage->file_path) }}" alt="{{ $productImage->file_path }}" style="height: 100px;">
+                        @endforeach
                     </td>
                 </tr>
                 <tr>

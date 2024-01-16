@@ -84,19 +84,19 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label>Product images</label>
-                    @foreach (range(0, 2) as $i)
+                    @foreach ($product->productImages as $productImage)
                         <div>
-                            <img src="{{ Storage::url($product->productImages[$i]->file_path) }}"
-                                alt="{{ $product->productImages[$i]->file_path }}" height="100">
-                            <span>{{ old('product_images[0]', $product->productImages[$i]->file_path) }}</span>
+                            <img src="{{ Storage::url($productImage->file_path) }}"
+                                alt="{{ $productImage->file_path }}" height="100">
+                            <span>{{ old('product_images[0]', $productImage->file_path) }}</span>
                         </div>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file"
-                                    value="{{ old('product_images[' . $i . ']', $product->productImages[0]->file_path) }}"
-                                    name="product_images[]" class="custom-file-input" id="productImage_{{ $i }}"
-                                    placeholder="{{ old('product_images[' . $i . ']', $product->productImages[$i]->file_path) }}">
-                                <label class="custom-file-label" for="productImage_{{ $i }}">
+                                    value="{{ old('product_images[]', $productImage->file_path) }}"
+                                    name="product_images[]" class="custom-file-input" id="productImage_{{ $productImage->id }}"
+                                    placeholder="{{ old('product_images[]', $productImage->file_path) }}">
+                                <label class="custom-file-label" for="productImage_{{ $productImage->id }}">
                                     Choose image
                                 </label>
                             </div>
