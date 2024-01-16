@@ -63,37 +63,41 @@ export default {
             this.getFilteredProducts()
         },
         sortBy() {
-            if (this.sort === 'min') {
-                this.products.sort((a, b) => a.price - b.price)
-            }
-            if (this.sort === 'max') {
-                this.products.sort((a, b) => b.price - a.price)
-            }
-            if (this.sort === 'a-z') {
-                this.products.sort((a, b) => {
-                    const titleA = a.title.toUpperCase()
-                    const titleB = b.title.toUpperCase()
-                    if (titleA < titleB) {
-                        return -1;
-                    }
-                    if (titleA > titleB) {
-                        return 1;
-                    }
-                    return 0;
-                })
-            }
-            if (this.sort === 'z-a') {
-                this.products.sort((a, b) => {
-                    const titleA = a.title.toUpperCase()
-                    const titleB = b.title.toUpperCase()
-                    if (titleA > titleB) {
-                        return -1;
-                    }
-                    if (titleA < titleB) {
-                        return 1;
-                    }
-                    return 0;
-                })
+            switch (this.sort) {
+                case 'min':
+                    this.products.sort((a, b) => a.price - b.price)
+                    break;
+                case 'max':
+                    this.products.sort((a, b) => b.price - a.price)
+                    break;
+                case 'a-z':
+                    this.products.sort((a, b) => {
+                        const titleA = a.title.toUpperCase()
+                        const titleB = b.title.toUpperCase()
+                        if (titleA < titleB) {
+                            return -1;
+                        }
+                        if (titleA > titleB) {
+                            return 1;
+                        }
+                        return 0;
+                    })
+                    break;
+                case 'z-a':
+                    this.products.sort((a, b) => {
+                        const titleA = a.title.toUpperCase()
+                        const titleB = b.title.toUpperCase()
+                        if (titleA > titleB) {
+                            return -1;
+                        }
+                        if (titleA < titleB) {
+                            return 1;
+                        }
+                        return 0;
+                    })
+                    break;
+                default:
+                    break;
             }
         }
     }
