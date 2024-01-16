@@ -14,8 +14,10 @@ export default {
                 tags: [],
                 colors: [],
                 prices: [],
+                page: null,
             },
-            sort: 'a-z',
+            sort: 'min',
+            pagination: [],
         }
     },
     mounted() {
@@ -23,10 +25,13 @@ export default {
         this.getFilter()
     },
     methods: {
-        getProducts() {
+        getProducts(page = 1) {
+            this.filter.page = page
             axios.post('/api/products', this.filter)
                 .then(res => {
                     this.products = res.data.data
+                    this.pagination = res.data.meta
+                    console.log(this.pagination)
                 })
         },
         getProduct(id) {
@@ -50,10 +55,7 @@ export default {
                 })
         },
         getFilteredProducts() {
-            axios.post('/api/products', this.filter)
-                .then(res => {
-                    this.products = res.data.data
-                })
+            this.getProducts()
         },
         resetFilteredProducts() {
             this.filter.categories = []
@@ -215,9 +217,9 @@ export default {
                 <button @click="getFilteredProducts" class="btn btn-primary">Apply</button>
             </li>
         </ul>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 pb-5">
             <template v-for="product in products">
-                <div v-if="product.is_published, product.price" class="col">
+                <div v-if="product.is_published" class="col">
                     <div class="card shadow-sm">
                         <img :src="product.preview_image" alt="" class="card-img-top">
                         <div class="card-body">
@@ -282,5 +284,36 @@ export default {
                 </div>
             </template>
         </div>
+        <nav v-if="pagination.last_page > 1" class="d-flex justify-content-center" aria-label="Page navigation example">
+            <ul class="pagination">
+                <li v-if="pagination.current_page !== 1" class="page-item">
+                    <a @click.prevent="getProducts(pagination.current_page - 1)" class="page-link" href="#"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <template v-for="link in pagination.links">
+                    <template v-if="+link.label">
+                        <li v-if="(pagination.current_page - link.label < 2 &&
+                            pagination.current_page - link.label > -2) ||
+                            +link.label === 1 ||
+                            +link.label === pagination.last_page" :class="link.active ? 'page-item active' : 'page-item'">
+                            <a @click.prevent="getProducts(link.label)" class="page-link" href="#">{{ link.label }}</a>
+                        </li>
+                        <li v-if="pagination.current_page !== 3 &&
+                            (pagination.current_page - link.label === 2 ||
+                                pagination.current_page - link.label === -2)">
+                            <span class="page-link">...</span>
+                        </li>
+                    </template>
+                </template>
+                <li v-if="pagination.current_page !== pagination.last_page" class="page-item">
+                    <a @click.prevent="getProducts(pagination.current_page + 1)" class="page-link" href="#"
+                        aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </main>
 </template>
