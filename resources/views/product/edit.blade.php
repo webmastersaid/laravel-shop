@@ -84,18 +84,18 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label>Product images</label>
-                    @foreach ($product->productImages as $productImage)
+                    @foreach ($product->productImages as $key => $productImage)
                         <div>
                             <img src="{{ Storage::url($productImage->file_path) }}"
                                 alt="{{ $productImage->file_path }}" height="100">
-                            <span>{{ old('product_images[0]', $productImage->file_path) }}</span>
+                            <span>{{ old('product_images['.$key.']', $productImage->file_path) }}</span>
                         </div>
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file"
-                                    value="{{ old('product_images[]', $productImage->file_path) }}"
-                                    name="product_images[]" class="custom-file-input" id="productImage_{{ $productImage->id }}"
-                                    placeholder="{{ old('product_images[]', $productImage->file_path) }}">
+                                    value="{{ old('product_images['.$key.']', $productImage->file_path) }}"
+                                    name="product_images[{{$key}}]" class="custom-file-input" id="productImage_{{ $productImage->id }}"
+                                    placeholder="{{ old('product_images['.$key.']', $productImage->file_path) }}">
                                 <label class="custom-file-label" for="productImage_{{ $productImage->id }}">
                                     Choose image
                                 </label>

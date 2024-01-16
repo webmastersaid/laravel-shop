@@ -59,7 +59,7 @@ class ProductController extends Controller
             $imageCount = ProductImage::where('product_id', $product->id)->count();
             if ($imageCount > 3) break;
             $filePath = Storage::disk('public')->put('/images/product', $productImage);
-            ProductImage::firstOrCreate([
+            ProductImage::create([
                 'product_id' => $product->id,
                 'file_path' => $filePath,
             ]);
@@ -108,7 +108,7 @@ class ProductController extends Controller
             $imageCount = ProductImage::where('product_id', $product->id)->count();
             if ($imageCount > 3) break;
             $filePath = Storage::disk('public')->put('/images/product', $productImage);
-            ProductImage::firstOrCreate([
+            ProductImage::create([
                 'product_id' => $product->id,
                 'file_path' => $filePath,
             ]);

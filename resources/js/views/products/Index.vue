@@ -8,7 +8,14 @@ export default {
             price: {
                 min: 0,
                 max: 0,
-            }
+            },
+            filter: {
+                categories: [],
+                tags: [],
+                colors: [],
+                prices: [],
+            },
+            filterApply: false,
         }
     },
     mounted() {
@@ -17,7 +24,7 @@ export default {
     },
     methods: {
         getProducts() {
-            axios.get('/api/products')
+            axios.post('/api/products', this.filter)
                 .then(res => {
                     this.products = res.data.data
                 })
@@ -40,8 +47,20 @@ export default {
                     if (res.data.price.max) {
                         this.price.max = res.data.price.max
                     }
-                    console.log(this.filters)
                 })
+        },
+        getFilteredProducts() {
+            axios.post('/api/products', this.filter)
+                .then(res => {
+                    this.products = res.data.data
+                })
+        },
+        resetFilteredProducts() {
+            this.filter.categories = []
+            this.filter.tags = []
+            this.filter.colors = []
+            this.filter.prices = []
+            this.getFilteredProducts()
         },
     }
 }
@@ -63,8 +82,8 @@ export default {
                         <li v-for="category in filters.categories">
                             <div class="dropdown-item">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" :value="category.id"
-                                        :id="`category_${category.id}`">
+                                    <input v-model="filter.categories" class="form-check-input" type="checkbox"
+                                        :value="category.id" :id="`category_${category.id}`">
                                     <label class="form-check-label" :for="`category_${category.id}`">
                                         {{ category.title }}
                                     </label>
@@ -84,7 +103,8 @@ export default {
                         <li v-for="tag in filters.tags">
                             <div class="dropdown-item">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" :value="tag.id" :id="`tag_${tag.id}`">
+                                    <input v-model="filter.tags" class="form-check-input" type="checkbox" :value="tag.id"
+                                        :id="`tag_${tag.id}`">
                                     <label class="form-check-label" :for="`tag_${tag.id}`">
                                         {{ tag.title }}
                                     </label>
@@ -104,7 +124,7 @@ export default {
                         <li v-for="color in filters.colors">
                             <div class="dropdown-item">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" :value="color.id"
+                                    <input v-model="filter.colors" class="form-check-input" type="checkbox" :value="color.id"
                                         :id="`color_${color.id}`">
                                     <label class="form-check-label d-flex justify-content-between"
                                         :for="`color_${color.id}`">
@@ -127,23 +147,28 @@ export default {
                         <li>
                             <div class="mb-3">
                                 <label for="priceFrom" class="form-label">From</label>
-                                <input type="text" class="form-control" id="priceFrom" :placeholder="price.min">
+                                <input v-model="filter.prices[0]" type="text" class="form-control" id="priceFrom"
+                                    :placeholder="price.min">
                             </div>
                             <div class="mb-3">
                                 <label for="priceTo" class="form-label">To</label>
-                                <input type="text" class="form-control" id="priceTo" :placeholder="price.max">
+                                <input v-model="filter.prices[1]" type="text" class="form-control" id="priceTo"
+                                    :placeholder="price.max">
                             </div>
                         </li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item m-1">
-                <button class="btn btn-primary">Apply</button>
+                <button @click="resetFilteredProducts" class="btn btn-secondary">Reset</button>
+            </li>
+            <li class="nav-item m-1">
+                <button @click="getFilteredProducts" class="btn btn-primary">Apply</button>
             </li>
         </ul>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <template v-for="product in products">
-                <div v-if="product.is_published" class="col">
+                <div v-if="product.is_published, product.price" class="col">
                     <div class="card shadow-sm">
                         <img :src="product.preview_image" alt="" class="card-img-top">
                         <div class="card-body">
@@ -174,7 +199,7 @@ export default {
                                 </div>
                                 <div class="modal-body">
                                     <img v-if="modalProduct.preview_image" :src="modalProduct.preview_image"
-                                        :alt="modalProduct.preview_image" class="img-fluid">
+                                        :alt="modalProduct.preview_image" class="img-fluid pb-2">
                                     <div v-if="modalProduct.product_images" class="row">
                                         <div v-for="productImage in modalProduct.product_images" class="col-4">
                                             <img :src="productImage.url" class="img-fluid" :alt="productImage.url">
@@ -208,5 +233,4 @@ export default {
                 </div>
             </template>
         </div>
-    </main>
-</template>
+</main></template>
