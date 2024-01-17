@@ -3,10 +3,16 @@ export default {
     data() {
         return {
             product: [],
+            productQty: 0,
+            productCount: 1,
         }
     },
     mounted() {
         this.getProduct(this.$route.params.id)
+        this.getProductQty(this.$route.params.id)
+    },
+    updated() {
+        this.getProductQty(this.$route.params.id)
     },
     methods: {
         getProduct(id) {
@@ -14,8 +20,67 @@ export default {
                 .then(res => {
                     this.product = res.data.data
                 })
+            let productsInCart = localStorage.getItem('cart')
+            productsInCart = JSON.parse(productsInCart)
+            if (productsInCart) {
+                productsInCart.forEach(productInCart => {
+                    if (productInCart.id === id) {
+                        this.productQty = +productInCart.qty
+                    }
+                })
+            }
         },
-    }
+        addToCart(id, isSingle = false) {
+            let cart = localStorage.getItem('cart')
+            let productToCart = [
+                {
+                    'id': id,
+                    'qty': this.productQty,
+                },
+            ]
+            if (!cart) {
+                this.productQty = 1
+                productToCart[0].qty = +this.productQty
+                localStorage.setItem('cart', JSON.stringify(productToCart))
+            } else {
+                cart = JSON.parse(cart)
+                cart.forEach(productInCart => {
+                    if (productInCart.id === id) {
+                        if (isSingle) {
+                            productInCart.qty += 1
+                        } else {
+                            productInCart.qty = +productInCart.qty + (+this.productCount)
+                        }
+                        this.productQty = +productInCart.qty
+                        productToCart = null
+                    }
+                })
+                Array.prototype.push.apply(cart, productToCart)
+                localStorage.setItem('cart', JSON.stringify(cart))
+            }
+            this.productCount = 1
+        },
+        addProductQty() {
+            this.productCount += 1
+        },
+        removeProductQty() {
+            this.productCount -= 1
+        },
+        getProductQty(id) {
+            let productsInCart = localStorage.getItem('cart')
+            productsInCart = JSON.parse(productsInCart)
+            if (productsInCart) {
+                productsInCart.forEach(productInCart => {
+                    
+                    if (productInCart.id === +id) {
+                        this.productQty = productInCart.qty
+                    }
+                })
+            } else {
+                this.productQty = 0
+            }
+        }
+    },
 }
 </script>
 <template>
@@ -50,8 +115,23 @@ export default {
                     <p class="fs-5">{{ product.content }}</p>
                 </div>
                 <div class="row col-lg-6 g-1">
-                    <button type="button" class="btn btn-outline-primary">Order</button>
-                    <button type="button" class="btn btn-primary">Add to cart</button>
+                    <span v-if="productQty > 0">
+                        In cart: {{ productQty }}
+                    </span>
+                    <div class="d-flex">
+                        <div class="m-1">
+                            <button @click="removeProductQty" class="btn btn-outline-primary">-</button>
+                        </div>
+                        <div class="m-1">
+                            <input v-model="productCount" type="text" class="form-control">
+                        </div>
+                        <div class="m-1">
+                            <button @click="addProductQty" class="btn btn-outline-primary">+</button>
+                        </div>
+                    </div>
+                    <button @click="addToCart(product.id)" type="button" class="btn btn-primary">
+                        Add to cart
+                    </button>
                 </div>
             </div>
         </div>

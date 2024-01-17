@@ -18,6 +18,8 @@ export default {
             },
             sort: 'min',
             pagination: [],
+            productQty: 0,
+            productCount: 1,
         }
     },
     mounted() {
@@ -40,6 +42,13 @@ export default {
                 }).then(() => {
                     document.getElementById(`product_${this.modalProduct.id}`).click()
                 })
+            let productsInCart = localStorage.getItem('cart')
+            productsInCart = JSON.parse(productsInCart)
+            productsInCart.forEach(productInCart => {
+                if (productInCart.id === id) {
+                    this.productQty = +productInCart.qty
+                }
+            })
         },
         getFilter() {
             axios.get('/api/products/filter')
@@ -99,6 +108,57 @@ export default {
                     break;
                 default:
                     break;
+            }
+        },
+        addToCart(id, isSingle = false) {
+            let cart = localStorage.getItem('cart')
+            let productToCart = [
+                {
+                    'id': id,
+                    'qty': this.productQty,
+                },
+            ]
+            if (!cart) {
+                this.productQty = 1
+                productToCart[0].qty = +this.productQty
+                localStorage.setItem('cart', JSON.stringify(productToCart))
+                this.productCount = 0
+            } else {
+                cart = JSON.parse(cart)
+                cart.forEach(productInCart => {
+                    if (productInCart.id === id) {
+                        if (isSingle) {
+                            productInCart.qty += 1
+                        } else {
+                            productInCart.qty = +productInCart.qty + (+this.productCount)
+                            this.productCount = 0
+                        }
+                        this.productQty = +productInCart.qty
+                        productToCart = null
+                    }
+                })
+                Array.prototype.push.apply(cart, productToCart)
+                localStorage.setItem('cart', JSON.stringify(cart))
+            }
+        },
+        addProductQty() {
+            this.productCount += 1
+        },
+        removeProductQty() {
+            this.productCount -= 1
+        },
+        getProductQty(id) {
+            let productsInCart = localStorage.getItem('cart')
+            productsInCart = JSON.parse(productsInCart)
+            if (productsInCart) {
+                productsInCart.forEach(productInCart => {
+                    
+                    if (productInCart.id === +id) {
+                        this.productQty = productInCart.qty
+                    }
+                })
+            } else {
+                this.productQty = 0
             }
         }
     }
@@ -236,7 +296,9 @@ export default {
                                     <button @click="getProduct(product.id)" type="button" class="btn btn-outline-secondary">
                                         Quick view
                                     </button>
-                                    <button type="button" class="btn btn-primary">Add to cart</button>
+                                    <button @click="addToCart(product.id, true)" type="button" class="btn btn-primary">Add
+                                        to
+                                        cart</button>
                                 </div>
                             </div>
                             <div :id="`product_${product.id}`" data-bs-toggle="modal"
@@ -284,8 +346,23 @@ export default {
                                     <div>Price: $ <strong>{{ modalProduct.price }}</strong></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-primary">Order</button>
-                                    <button type="button" class="btn btn-primary">Add to cart</button>
+                                    <span v-if="productQty > 0">
+                                        In cart: {{ productQty }}
+                                    </span>
+                                    <div class="d-flex">
+                                        <div class="m-1">
+                                            <button @click="removeProductQty" class="btn btn-outline-primary">-</button>
+                                        </div>
+                                        <div class="m-1">
+                                            <input v-model="productCount" type="text" class="form-control">
+                                        </div>
+                                        <div class="m-1">
+                                            <button @click="addProductQty" class="btn btn-outline-primary">+</button>
+                                        </div>
+                                    </div>
+                                    <button @click="addToCart(product.id)" type="button" class="btn btn-primary">
+                                        Add to cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
