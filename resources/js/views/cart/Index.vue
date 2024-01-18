@@ -3,6 +3,9 @@ export default {
     data() {
         return {
             productsInCart: [],
+            userName: null,
+            userEmail: null,
+            userAddress: null
         }
     },
     methods: {
@@ -23,7 +26,20 @@ export default {
         },
         updateProductsInCart() {
             localStorage.setItem('cart', JSON.stringify(this.productsInCart))
-        }
+        },
+        orderProducts() {
+            const productsToOrder = {
+                'products': this.productsInCart,
+                'name': this.userName,
+                'email': this.userEmail,
+                'address': this.userAddress,
+                'total_price': this.totalPrice
+            }
+            axios.post('/api/order', productsToOrder)
+                .then(res => {
+                    console.log(res)
+                })
+        },
     },
     computed: {
         totalPrice() {
@@ -106,18 +122,34 @@ export default {
                 </template>
             </tbody>
         </table>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Total quantity:</th>
-                    <td>{{ totalQuantity }}</td>
-                    <th>Total price:</th>
-                    <td>$ {{ totalPrice }}</td>
-                    <td class="d-flex justify-content-end">
-                        <button class="btn btn-outline-primary px-5">Order</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    Total quantity:
+                    <span class="fs-5">{{ totalQuantity }}</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input v-model="userName" type="text" class="form-control" id="name" placeholder="Bob">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input v-model="userEmail" type="email" class="form-control" id="email" placeholder="bob@mail.com">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input v-model="userAddress" type="text" class="form-control" id="address" placeholder="City, street">
+                </div>
+                <div class="mb-3">
+                    Total price:
+                    <span class="fs-4">$ {{ totalPrice }}</span>
+                </div>
+                <div class="mb-3">
+                    <button @click="orderProducts" class="btn btn-outline-primary px-5">Order</button>
+                </div>
+            </div>
+        </div>
     </main>
 </template>

@@ -132,7 +132,7 @@ export default {
                             productInCart.qty = +productInCart.qty + (+this.productCount)
                             this.productCount = 0
                         }
-                        if(productInCart.qty < 0) {
+                        if (productInCart.qty < 0) {
                             productInCart.qty = 0
                         }
                         this.productQty = +productInCart.qty

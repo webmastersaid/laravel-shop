@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -83,5 +84,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/{group}/edit', [GroupController::class, 'edit'])->name('group.edit');
         Route::patch('/{group}', [GroupController::class, 'update'])->name('group.update');
         Route::delete('/{group}', [GroupController::class, 'delete'])->name('group.delete');
+    });
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.index');
+        Route::delete('/{order}', [OrderController::class, 'delete'])->name('order.delete');
     });
 });
