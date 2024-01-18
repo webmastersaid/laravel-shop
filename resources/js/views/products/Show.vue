@@ -7,13 +7,6 @@ export default {
             productCount: 1,
         }
     },
-    mounted() {
-        this.getProduct(this.$route.params.id)
-        this.getProductQty(this.$route.params.id)
-    },
-    updated() {
-        this.getProductQty(this.$route.params.id)
-    },
     methods: {
         getProduct(id) {
             axios.get(`/api/products/${id}`)
@@ -71,7 +64,6 @@ export default {
             productsInCart = JSON.parse(productsInCart)
             if (productsInCart) {
                 productsInCart.forEach(productInCart => {
-                    
                     if (productInCart.id === +id) {
                         this.productQty = productInCart.qty
                     }
@@ -79,7 +71,14 @@ export default {
             } else {
                 this.productQty = 0
             }
-        }
+        },
+    },
+    mounted() {
+        this.getProduct(this.$route.params.id)
+        this.getProductQty(this.$route.params.id)
+    },
+    updated() {
+        this.getProductQty(this.$route.params.id)
     },
 }
 </script>

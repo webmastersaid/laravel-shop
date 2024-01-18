@@ -22,10 +22,6 @@ export default {
             productCount: 1,
         }
     },
-    mounted() {
-        this.getProducts()
-        this.getFilter()
-    },
     methods: {
         getProducts(page = 1) {
             this.filter.page = page
@@ -110,11 +106,14 @@ export default {
                     break;
             }
         },
-        addToCart(id, isSingle = false) {
+        addToCart(product, isSingle = false) {
             let cart = localStorage.getItem('cart')
             let productToCart = [
                 {
-                    'id': id,
+                    'id': product.id,
+                    'preview_image': product.preview_image,
+                    'title': product.title,
+                    'price': product.price,
                     'qty': this.productQty,
                 },
             ]
@@ -126,12 +125,15 @@ export default {
             } else {
                 cart = JSON.parse(cart)
                 cart.forEach(productInCart => {
-                    if (productInCart.id === id) {
+                    if (productInCart.id === product.id) {
                         if (isSingle) {
-                            productInCart.qty += 1
+                            productInCart.qty++
                         } else {
                             productInCart.qty = +productInCart.qty + (+this.productCount)
                             this.productCount = 0
+                        }
+                        if(productInCart.qty < 0) {
+                            productInCart.qty = 0
                         }
                         this.productQty = +productInCart.qty
                         productToCart = null
@@ -142,26 +144,20 @@ export default {
             }
         },
         addProductQty() {
-            this.productCount += 1
+            this.productCount++
         },
         removeProductQty() {
-            this.productCount -= 1
-        },
-        getProductQty(id) {
-            let productsInCart = localStorage.getItem('cart')
-            productsInCart = JSON.parse(productsInCart)
-            if (productsInCart) {
-                productsInCart.forEach(productInCart => {
-                    
-                    if (productInCart.id === +id) {
-                        this.productQty = productInCart.qty
-                    }
-                })
+            if (this.productQty + this.productCount <= 0) {
+                this.productCount = 0
             } else {
-                this.productQty = 0
+                this.productCount--
             }
-        }
-    }
+        },
+    },
+    mounted() {
+        this.getProducts()
+        this.getFilter()
+    },
 }
 </script>
 <template>
@@ -296,9 +292,9 @@ export default {
                                     <button @click="getProduct(product.id)" type="button" class="btn btn-outline-secondary">
                                         Quick view
                                     </button>
-                                    <button @click="addToCart(product.id, true)" type="button" class="btn btn-primary">Add
-                                        to
-                                        cart</button>
+                                    <button @click="addToCart(product, true)" type="button" class="btn btn-primary">
+                                        Add to cart
+                                    </button>
                                 </div>
                             </div>
                             <div :id="`product_${product.id}`" data-bs-toggle="modal"
@@ -360,7 +356,7 @@ export default {
                                             <button @click="addProductQty" class="btn btn-outline-primary">+</button>
                                         </div>
                                     </div>
-                                    <button @click="addToCart(product.id)" type="button" class="btn btn-primary">
+                                    <button @click="addToCart(product)" type="button" class="btn btn-primary">
                                         Add to cart
                                     </button>
                                 </div>

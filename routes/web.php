@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{page}', [ClientController::class, 'index'])->where('page', '|products|products\/[0-9]+');
+Route::get('/{page}', [ClientController::class, 'index'])->where('page', 'cart|products|products\/[0-9]+');
 
 Auth::routes();
 
